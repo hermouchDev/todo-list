@@ -1,7 +1,7 @@
 function Logo() {
     return (
         <div>
-            <h1> Ready To Go ?</h1>
+            <h1> TO-DO LIST</h1> 
         </div>
     )
 }

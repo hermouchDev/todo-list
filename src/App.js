@@ -6,9 +6,9 @@ import { useState } from "react";
 
 function App() {
     const [items, setItems] = useState([
-        { id: 1, description: "Passports", quantity: 2, packed: true },
-        { id: 2, description: "Socks", quantity: 12, packed: false },
-        { id: 3, description: "Laptop", quantity: 1, packed: false },
+        { id: 1, description: "Finish homework for web development", packed: true },
+        { id: 2, description: "Go to the gym", packed: false },
+        { id: 3, description: "Prepare presentation for TP7", packed: false },
     ]);
 
     function handleAddItem(newItem) {
@@ -31,7 +31,7 @@ function App() {
     }
 
     function handleDeletItem(id) {
-        const confirmed = window.confirm('Are you sure you want to delet the item 🤔 ? ');
+        const confirmed = window.confirm('Are you sure you want to delet the task 🤔 ? ');
         confirmed && setItems((items) => items.filter((item) => item.id !== id));
     }
 
@@ -44,15 +44,23 @@ function App() {
     }
 
     function handleClearList() {
-        const confirmed = window.confirm('Are you sure you want to delet all items 🤔 ? ');
+        const confirmed = window.confirm('Are you sure you want to delet all tasks 🤔 ? ');
         confirmed && setItems([]);
+    }
+
+    function handleEditItem(id, newDescription) {
+        setItems((items) =>
+            items.map((item) =>
+                item.id === id ? { ...item, description: newDescription } : item
+            )
+        );
     }
 
     return (
         <div className="app">
             <Logo />
             <Form onAddItem={handleAddItem} />
-            <PackingList items={items} onDeletItem={handleDeletItem} onToggleItem={handleToggleItem} clearList={handleClearList} />
+            <PackingList items={items} onDeletItem={handleDeletItem} onToggleItem={handleToggleItem} onEditItem={handleEditItem} clearList={handleClearList} />
             <Stats items={items} />
         </div>
     );
