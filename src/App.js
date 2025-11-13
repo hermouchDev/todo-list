@@ -47,6 +47,10 @@ function App() {
                 body: formData
             });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const result = await response.json();
             
             if (result.success) {
@@ -57,7 +61,11 @@ function App() {
             }
         } catch (error) {
             console.error('Error adding task:', error);
-            alert('Error adding task. Please try again.');
+            if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                alert('⚠️ Cannot connect to server. Please check:\n1. PHP server is running\n2. API_URL is correct\n3. Database is set up');
+            } else {
+                alert(`⚠️ Error adding task: ${error.message}`);
+            }
         }
     }
 
