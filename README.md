@@ -183,7 +183,6 @@ The React app uses the Fetch API to communicate with the PHP backend:
 | `npm run build`  | Bundles the app for production.      |
 | `npm test`       | Launches the test runner.            |
 | `npm run eject`  | Ejects configuration (irreversible). |
-|------------------|--------------------------------------|
 
 ## Customization Tips
 
@@ -201,13 +200,14 @@ The React app uses the Fetch API to communicate with the PHP backend:
 
 ## 🎥 Project demonstration
 
-[![Watch the video](./public/images/demo.png)](https://www.linkedin.com/feed/update/urn:li:activity:7394878745922396160/)
-
+<a href="https://www.linkedin.com/feed/update/urn:li:activity:7394878745922396160/">
+  <img src="./public/images/demo.png" alt="Watch the video" width="400">
+</a>
 
 ## 👥 Athors
 
-HERMOUCH ABDELMAJID 
-ANASS ET-TAI
+- HERMOUCH ABDELMAJID
+- ANASS ET-TAI
 
 ---
 
