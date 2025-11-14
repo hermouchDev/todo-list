@@ -197,7 +197,7 @@ The React app uses the Fetch API to communicate with the PHP backend:
 
 ## 📸 Screenshots
 
-<img src="images/todo-list.png" alt="Todo List Screenshot" width="400">
+<img src="./public/images/todo-list.png" alt="Todo List Screenshot" width="400">
 
 ## 🎥 Project demonstration
 
