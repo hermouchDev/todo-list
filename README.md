@@ -193,11 +193,11 @@ The React app uses the Fetch API to communicate with the PHP backend:
 
 ## 🚀 Live Demo
 
-[https://todo-list-eh.vercel.app/](#) 
+[Click here to watch the demo](https://todo-list-eh.vercel.app/)
 
 ## 📸 Screenshots
 
-![alt text](./public/images/todo-list.png)
+<img src="images/todo-list.png" alt="Todo List Screenshot" width="400">
 
 ## 🎥 Project demonstration
 
