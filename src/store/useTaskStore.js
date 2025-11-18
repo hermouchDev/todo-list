@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { playCompletionSound } from '../utils/notification'; 
 
 const API_URL = 'http://localhost/todo-list/api/index.php'; // adjust if served elsewhere
 
@@ -40,6 +41,9 @@ const useTaskStore = create((set, get) => ({
     });
     if (!res.ok) throw new Error('Failed to update task');
     const updated = await res.json();
+    if (status === 'done') {
+      playCompletionSound();
+    }
     set((state) => ({
       tasks: state.tasks.map((task) => (task.id === id ? updated : task)),
     }));

@@ -12,6 +12,7 @@ A modern, full-stack todo list application with a board view, built with React, 
 - ⏰ **Timestamp Tracking**: Automatic timestamps for task creation and status changes
 - 📱 **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 - 🎯 **Sorting Options**: Sort by input order, description, or status
+- 🔊 **Sound Notifications**: Audio feedback when tasks are completed
 - 🖱️ **Touch Support**: Mobile-friendly drag-and-drop for board view
 - 💾 **Database Integration**: Persistent storage with MySQL backend
 
@@ -172,15 +173,21 @@ todo-list/
 
 ### Todo Page :
 
-<img src="./public/images/todo-list.png" width="300" />
+<img src="./public/images/todo-list.png" width="400" />
 
 ### Board View :
 
-<img src="./public/images/board-view.png" width="300" />
+<img src="./public/images/board-view.png" width="400" />
 
 ### Todo Database :
 
-<img src="./public/images/todo-list-db.png" width="300" />
+<img src="./public/images/todo-list-db.png" width="400" />
+
+## 🎥 Project demonstration
+
+<a href="https://www.linkedin.com/feed/update/urn:li:activity:7396688795171192832/">
+  <img src="./public/images/demo-image.png" alt="Watch the video" width="400">
+</a>
 
 ## 🔌 API Endpoints
 

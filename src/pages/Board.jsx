@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState, useRef, useEffect } from 'react';
 import useTaskStore from '../store/useTaskStore';
 import Column from '../components/Column';
 import './Board.css';
+import { playCompletionSound } from '../utils/notification';
 
 function Board() {
   const navigate = useNavigate();
@@ -106,6 +107,9 @@ function Board() {
       const taskId = e.dataTransfer.getData('taskId');
       if (taskId) {
         updateTaskStatus(taskId, targetStatus);
+      }
+      if (targetStatus === 'done') {
+        playCompletionSound();
       }
     },
     [updateTaskStatus]
