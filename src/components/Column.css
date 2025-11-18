@@ -1,0 +1,16 @@
+/* Column custom styles for drag & drop */
+.board-column {
+  border: 2px dashed transparent;
+  transition: all 0.2s ease;
+  min-height: 400px;
+  width: 100%;
+  overflow-y: auto; /* Allow scrolling */
+}
+
+.board-column.drag-over {
+  border-color: #7c3aed !important;
+  background-color: #f3e8ff !important;
+}
+
+/* Responsive adjustments are handled in Board.css */
+

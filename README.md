@@ -1,215 +1,316 @@
-# Todo List (React)
+# 📝 ToDo List Application
 
-## Overview
+A modern, full-stack todo list application with a board view, built with React, PHP, and MySQL. Features drag-and-drop functionality, task status tracking, and timestamp management.
 
-Interactive todo list built in React with a modern, responsive UI. Users can add, edit, mark as done, and delete tasks. The layout adapts across devices, displaying each task vertically with intuitive icons and hover feedback. Styling uses a soft purple gradient theme and Bootstrap utilities for spacing and alignment.
+## ✨ Features
 
-An optional PHP + MySQL backend is provided for persisting tasks; the app can also run in purely client-side mode with in-memory state.
+- ✅ **Task Management**: Create, edit, delete, and organize tasks
+- 📊 **Two Views**:
+  - **Tasks Page**: List view with sorting and filtering
+  - **Board Page**: Kanban-style board with drag-and-drop
+- 🎨 **Status Tracking**: Three statuses (Todo, In Progress, Done)
+- ⏰ **Timestamp Tracking**: Automatic timestamps for task creation and status changes
+- 📱 **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+- 🎯 **Sorting Options**: Sort by input order, description, or status
+- 🖱️ **Touch Support**: Mobile-friendly drag-and-drop for board view
+- 💾 **Database Integration**: Persistent storage with MySQL backend
 
-## Features
+## 🛠️ Tech Stack
 
-- Add tasks with uniqueness checks to prevent duplicates
-- Toggle task completion and visualize it with strike-through styling
-- Inline edit and delete controls with icon buttons
-- Responsive layout: checkbox top-center, text centered, actions at bottom on small screens
-- Hover effects for better interaction cues
-- Optional persistence with PHP API and MySQL database
+### Frontend
 
-## Tech Stack
+- **React 19.2** - UI library
+- **Vite** - Build tool and dev server
+- **Zustand** - State management
+- **React Router** - Navigation and routing
+- **Bootstrap 5.3** - Responsive styling
+- **HTML5 Drag & Drop API** - Drag-and-drop functionality
 
-- React (create-react-app)
-- Bootstrap 5 utilities
-- Custom CSS
-- Optional backend: PHP 8+, MySQL 5.7+/8.x
+### Backend
 
-## Frontend Structure
+- **PHP** - Server-side API
+- **MySQL** - Database
+- **PDO** - Database abstraction layer
 
-The React application follows a component-based architecture:
+## 📋 Prerequisites
 
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (v16 or higher) and npm
+- **XAMPP** (or any PHP/MySQL server)
+- **MySQL** (included with XAMPP)
+- **Git** (optional, for cloning)
+
+## 🚀 Installation
+
+### 1. Clone or Download the Project
+
+```bash
+# If using Git
+git clone <repository-url>
+cd todo-list
+
+# Or download and extract the project folder
 ```
-src/
-├── index.js              ← Entry point, renders App component
-├── index.css             ← Global styles and responsive design
-├── App.js                ← Main application component (state management)
-└── Components/
-    ├── Logo.js           ← Header logo component
-    ├── Form.js           ← Task input form component
-    ├── PackingList.js    ← Task list display component
-    └── Stats.js          ← Statistics component (task count)
+
+### 2. Install Frontend Dependencies
+
+```bash
+npm install
 ```
 
-### Component Overview
+### 3. Set Up Backend
 
-1. **`App.js`** - Main container component
-   - Manages application state (`items` array)
-   - Handles all CRUD operations (add, edit, delete, toggle)
-   - Coordinates communication between components
-   - Can be configured to use PHP backend via fetch API
+#### Option A: Using XAMPP (Recommended)
 
-2. **`Components/Logo.js`** - Header component
-   - Displays the application title/logo
-   - Styled with gradient background
+1. Copy the entire `todo-list` folder to `C:\xampp\htdocs\`
+2. Your project should be at: `C:\xampp\htdocs\todo-list\`
 
-3. **`Components/Form.js`** - Task input form
-   - Controlled input for new task creation
-   - Prevents duplicate tasks
-   - Uses React state for form management
-   - Calls `onAddItem` callback from parent
+#### Option B: Using a Different Server
 
-4. **`Components/PackingList.js`** - Task list component
-   - Displays all tasks in a responsive grid/list
-   - Contains `Item` sub-component for individual tasks
-   - Handles sorting (by input order, description, or completion status)
-   - Includes edit and delete icon buttons
-   - Responsive layout: vertical stack on mobile, horizontal on desktop
+- Place the `api` folder in your web server's document root
+- Update the `API_URL` in `src/store/useTaskStore.js` to match your server path
 
-5. **`Components/Stats.js`** - Statistics component
-   - Shows total number of tasks
-   - Displays completion percentage
+### 4. Create Database
 
-### State Management
-
-- **Local State**: Uses React `useState` hook for component-level state
-- **Props**: Data flows down from `App.js` to child components
-- **Callbacks**: Child components communicate up via callback functions
-- **Optional Backend**: Can integrate with PHP backend using `useEffect` and `fetch`
-
-### Styling
-
-- **`index.css`**: Global styles, responsive breakpoints, color scheme
-- **Bootstrap 5**: Utility classes for layout and responsive design
-- **Custom CSS**: Purple gradient theme, hover effects, animations
-
-## Getting Started (Frontend Only)
-
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
-2. **Run the development server**
-   ```bash
-   npm start
-   ```
-3. Open http://localhost:3000/ in your browser.
-
-The app will store tasks in memory for the current session.
-
-## Optional: PHP + MySQL Backend
-
-To persist tasks, connect the React app to the provided PHP backend.
-
-### Database Setup
+1. Open **phpMyAdmin** (usually at `http://localhost/phpmyadmin`)
+2. Create a new database named `todolist`
+3. Run the following SQL script:
 
 ```sql
-CREATE DATABASE IF NOT EXISTS todolist;
+CREATE DATABASE IF NOT EXISTS todolist CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE todolist;
 
 CREATE TABLE IF NOT EXISTS todo (
-  id BIGINT(20) NOT NULL AUTO_INCREMENT,
-  title VARCHAR(2048) NOT NULL,
-  done TINYINT(1) NOT NULL DEFAULT '0',
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  status ENUM('todo','inprogress','done') NOT NULL DEFAULT 'todo',
+  createdAt DATETIME DEFAULT NULL,
+  inProgressAt DATETIME DEFAULT NULL,
+  doneAt DATETIME DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 ```
 
-### Backend Structure
+### 5. Configure Database Connection
 
-Create the following file structure:
+Edit `api/config/db.php` and update the database credentials if needed:
+
+```php
+private $host = 'localhost';
+private $db_name = 'todolist';
+private $username = 'root';
+private $password = ''; // Change if your MySQL has a password
+```
+
+## 🏃 Running the Application
+
+### 1. Start XAMPP Services
+
+- Start **Apache** and **MySQL** from the XAMPP Control Panel
+
+### 2. Start Frontend Development Server
+
+```bash
+npm run dev
+```
+
+The React app will be available at `http://localhost:5173` (or the port shown in terminal)
+
+### 3. Access the Application
+
+- **Frontend**: `http://localhost:5173`
+- **Backend API**: `http://localhost/todo-list/api/index.php`
+
+## 📁 Project Structure
 
 ```
 todo-list/
 ├── api/
-│   └── config/
-│       └── db.php          ← Database connection configuration
-├── index.php               ← Main backend file (handles all actions)
-├── src/                    ← React frontend code
-└── ...
+│   ├── config/
+│   │   └── db.php          # Database connection configuration
+│   └── index.php           # Main API endpoint (handles all CRUD operations)
+├── src/
+│   ├── components/
+│   │   ├── Column.jsx       # Board column component
+│   │   ├── Layout.jsx       # Main layout wrapper
+│   │   ├── TaskCard.jsx     # Individual task card component
+│   │   └── TasksInput.jsx   # Task input form
+│   ├── pages/
+│   │   ├── Board.jsx        # Kanban board page
+│   │   └── Tasks.jsx         # Tasks list page
+│   ├── store/
+│   │   └── useTaskStore.js  # Zustand state management
+│   ├── App.jsx              # Main app component
+│   └── main.jsx             # Entry point
+├── public/                   # Static assets
+├── index.html               # HTML template
+├── package.json             # Node dependencies
+└── vite.config.js           # Vite configuration
 ```
 
-### Backend Files
+## 🎮 Usage
 
-1. **`api/config/db.php`** - Database connection function
-   - Contains MySQL connection settings
-   - Provides `getDBConnection()` function
+### Tasks Page
 
-2. **`index.php`** - Main backend file (at project root)
-   - Handles all POST actions: `new`, `delete`, `toggle`, `update`
-   - Reads all tasks from database into `$taches` variable (sorted by `created_at DESC`)
-   - Returns JSON response for React fetch requests
+- **Add Task**: Type in the input field and click "ADD"
+- **Edit Task**: Double-click on a task title to edit
+- **Change Status**: Use the dropdown to change task status (Todo → In Progress → Done)
+- **Delete Task**: Click the delete button (trash icon)
+- **Sort Tasks**: Use the sort dropdown to organize tasks
+- **Clear All**: Click "CLEAR LIST" to delete all tasks
 
-### Backend Actions
+### Board Page
 
-The `index.php` file handles the following POST actions:
-
-- **`new`** - Add a new task (requires `title` in POST)
-- **`delete`** - Delete a task (requires `id` in POST)
-- **`toggle`** - Toggle task completion status (requires `id` in POST)
-- **`update`** - Update task title (requires `id` and `title` in POST)
-
-All actions are sent via POST with `FormData` from React using the Fetch API.
-
-### Running the Backend
-
-1. Place the project inside your PHP server root (e.g., `htdocs/todo-list` for XAMPP, or `www/` for WAMP).
-2. Update MySQL credentials in `api/config/db.php`:
-   ```php
-   $host = 'localhost';
-   $user = 'root';  // Your MySQL username
-   $pass = '';      // Your MySQL password
-   $db = 'todolist';
-   ```
-3. Ensure the backend is reachable at `http://localhost/todo-list/index.php`.
-4. Update `API_URL` in `src/App.js` to point to your PHP backend:
-   ```javascript
-   const API_URL = 'http://localhost/todo-list/index.php';
-   ```
-5. Update `App.js` to use `useEffect` and `fetch` to communicate with the backend.
-
-### React Integration
-
-The React app uses the Fetch API to communicate with the PHP backend:
-
-- **No form submission** - React handles all requests via `fetch()`
-- **FormData** - Used to send POST data to PHP
-- **JSON responses** - PHP returns JSON that React parses
-- **No page reloads** - All operations happen asynchronously
-
-## Available Scripts
-
-| Command          | Description                          |
-| ---------------- | -------------------------------------|
-| `npm start`      | Runs the app in development mode.    |
-| `npm run build`  | Bundles the app for production.      |
-| `npm test`       | Launches the test runner.            |
-| `npm run eject`  | Ejects configuration (irreversible). |
-
-## Customization Tips
-
-- Colors and hover styles live in `src/index.css`. The current palette uses purple gradients (`#a78bfa`, `#8b5cf6`, `#7c3aed`) and blush accents (`#ff6b6b`).
-- Icons are inline SVGs defined in `src/Components/PackingList.js`, making it easy to adjust size or colors.
-- Bootstrap classes control responsive layout; tweak column classes in `PackingList.js` for alternative arrangements.
-
-## 🚀 Live Demo
-
-[Click here to watch the demo](https://todo-list-eh.vercel.app/)
+- **View Tasks**: See all tasks organized in columns by status
+- **Drag & Drop**: Drag tasks between columns to change status
+- **Mobile Support**: Touch and drag on mobile devices
+- **Timestamps**: View when tasks were created, started, and completed
 
 ## 📸 Screenshots
 
-<img src="./public/images/todo-list.png" alt="Todo List Screenshot" width="400">
+### Todo Page :
 
-## 🎥 Project demonstration
+<img src="./public/images/todo-list.png" width="300" />
 
-<a href="https://www.linkedin.com/feed/update/urn:li:activity:7394878745922396160/">
-  <img src="./public/images/demo.png" alt="Watch the video" width="400">
-</a>
+### Board View :
 
-## 👥 Athors
+<img src="./public/images/board-view.png" width="300" />
 
-- HERMOUCH ABDELMAJID
-- ANASS ET-TAI
+### Todo Database :
+
+<img src="./public/images/todo-list-db.png" width="300" />
+
+## 🔌 API Endpoints
+
+The backend API (`api/index.php`) handles all operations via HTTP methods:
+
+### GET - Fetch All Tasks
+
+```
+GET http://localhost/todo-list/api/index.php
+```
+
+Returns: Array of all tasks
+
+### POST - Create New Task
+
+```
+POST http://localhost/todo-list/api/index.php
+Body: { "title": "Task title" }
+```
+
+Returns: Created task object
+
+### PUT - Update Task
+
+```
+PUT http://localhost/todo-list/api/index.php
+Body: { "id": "123", "status": "inprogress" }  // Update status
+Body: { "id": "123", "title": "New title" }    // Update title
+Body: { "id": "123", "status": "done", "title": "New title" }  // Update both
+```
+
+Returns: Updated task object
+
+### DELETE - Delete Task
+
+```
+DELETE http://localhost/todo-list/api/index.php?id=123
+```
+
+Returns: `{ "success": true }`
+
+## 📊 Task Data Structure
+
+Each task has the following structure:
+
+```javascript
+{
+  id: "1234567890",           // Unique task ID (string)
+  title: "Complete project", // Task title
+  status: "todo",             // Status: "todo", "inprogress", or "done"
+  createdAt: "2024-01-15T10:30:00Z",      // ISO timestamp when created
+  inProgressAt: "2024-01-16T14:20:00Z",    // ISO timestamp when moved to inprogress
+  doneAt: "2024-01-17T16:45:00Z"          // ISO timestamp when completed
+}
+```
+
+## 🎨 Timestamp Behavior
+
+- **Created**: Set automatically when task is created
+- **In Progress**: Set when status changes to "inprogress" (only once)
+- **Done**: Set when status changes to "done" (only once)
+- **Backward Changes**: Old timestamps are preserved (not erased)
+
+## 🐛 Troubleshooting
+
+### Database Connection Error
+
+- Ensure MySQL is running in XAMPP
+- Check database credentials in `api/config/db.php`
+- Verify database `todolist` exists
+
+### API Not Responding
+
+- Ensure Apache is running in XAMPP
+- Check that `api` folder is in `htdocs/todo-list/`
+- Verify API URL in `src/store/useTaskStore.js` matches your setup
+
+### CORS Errors
+
+- The backend includes CORS headers for development
+- For production, update CORS settings in `api/index.php`
+
+### Tasks Not Persisting
+
+- Check browser console for API errors
+- Verify database connection
+- Check PHP error logs in XAMPP
+
+## 📝 Scripts
+
+```bash
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Run linter
+npm run lint
+```
+
+## 🔒 Security Notes
+
+⚠️ **For Development Only**: This setup is configured for local development. For production:
+
+- Use environment variables for database credentials
+- Implement proper authentication/authorization
+- Add input validation and sanitization
+- Use HTTPS
+- Configure proper CORS policies
+- Add rate limiting
+
+## 📄 License
+
+This project is open source and available for personal and educational use.
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+## 👤 Author
+
+- Hermouch Abdelmajid
+- Anass Et-tai
+
+Created with ❤️ for managing tasks efficiently.
 
 ---
 
-Made with ❤️ to keep productivity on track.
-
+**Happy Task Managing! 🎉**
